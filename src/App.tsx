@@ -14,8 +14,10 @@ import {
   Home,
   Linkedin,
   Mail,
+  Menu,
   Moon,
   Sun,
+  X,
   UserRound,
   Wrench,
 } from "lucide-react";
@@ -204,6 +206,7 @@ function ProjectCarousel() {
 export function App() {
   const heroRef = useRef<HTMLElement>(null);
   const [activeSection, setActiveSection] = useState("inicio");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">(() => {
     const storedTheme = localStorage.getItem("theme");
 
@@ -330,14 +333,29 @@ export function App() {
 
   return (
     <>
-      <header className="site-header">
-        <nav aria-label="Navegação principal">
+      <header className={`site-header${isMobileMenuOpen ? " menu-open" : ""}`}>
+        <Button
+          className="menu-toggle"
+          size="icon"
+          type="button"
+          variant="secondary"
+          aria-label={isMobileMenuOpen ? "Fechar menu" : "Abrir menu"}
+          aria-controls="main-navigation"
+          aria-expanded={isMobileMenuOpen}
+          title={isMobileMenuOpen ? "Fechar menu" : "Abrir menu"}
+          onClick={() => setIsMobileMenuOpen((isOpen) => !isOpen)}
+        >
+          {isMobileMenuOpen ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
+        </Button>
+
+        <nav id="main-navigation" aria-label="Navegação principal">
           {navItems.map(({ id, label, Icon }) => (
             <a
               className={activeSection === id ? "active" : undefined}
               href={`#${id}`}
               aria-current={activeSection === id ? "page" : undefined}
               key={id}
+              onClick={() => setIsMobileMenuOpen(false)}
             >
               <Icon size={17} aria-hidden="true" />
               {label}
