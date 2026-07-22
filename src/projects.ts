@@ -89,16 +89,21 @@ export const projects: Project[] = [
   },
 ];
 
-export const skills = [
-  "TypeScript",
-  "React",
-  "Angular",
-  "Java",
-  "Spring Boot",
-  "Python",
-  "FastAPI",
-  "PostgreSQL",
-  "MQTT",
-  "Git",
-  "Docker",
+export const skillCategories = [
+  {
+    name: "Frontend",
+    skills: ["TypeScript", "React", "Angular"],
+  },
+  {
+    name: "Backend",
+    skills: ["Java", "Spring Boot", "Python", "FastAPI"],
+  },
+  {
+    name: "Dados e IoT",
+    skills: ["PostgreSQL", "MQTT"],
+  },
+  {
+    name: "Ferramentas",
+    skills: ["Git", "Docker"],
+  },
 ];

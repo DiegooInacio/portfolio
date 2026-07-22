@@ -41,7 +41,7 @@ import { Button } from "./components/ui/button";
 import { Card, CardContent, CardDescription, CardTitle } from "./components/ui/card";
 import { Input } from "./components/ui/input";
 import { Textarea } from "./components/ui/textarea";
-import { projects, skills, type Project } from "./projects";
+import { projects, skillCategories, type Project } from "./projects";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -570,16 +570,23 @@ export function App() {
             <h2>Tecnologias que utilizo</h2>
           </div>
           <div className="skill-cloud">
-            {skills.map((skill) => {
-              const Icon = skillIcons[skill] ?? Code2;
+            {skillCategories.map((category) => (
+              <div className="skill-category" key={category.name}>
+                <h3>{category.name}</h3>
+                <div className="skill-category-list" aria-label={`Tecnologias de ${category.name}`}>
+                  {category.skills.map((skill) => {
+                    const Icon = skillIcons[skill] ?? Code2;
 
-              return (
-                <Card className="skill-card" key={skill}>
-                  <Icon className="skill-icon" aria-hidden="true" />
-                  {skill}
-                </Card>
-              );
-            })}
+                    return (
+                      <Card className="skill-card" key={skill}>
+                        <Icon className="skill-icon" aria-hidden="true" />
+                        {skill}
+                      </Card>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 
