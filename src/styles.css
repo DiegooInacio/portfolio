@@ -67,11 +67,16 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 96px;
+  overscroll-behavior-y: none;
+  overflow-anchor: none;
 }
 
 body {
   margin: 0;
   min-width: 320px;
+  overflow-x: hidden;
+  overscroll-behavior-y: none;
+  overflow-anchor: none;
   background: var(--page-background);
   color: var(--foreground);
 }
@@ -91,8 +96,9 @@ button {
 }
 
 .site-header {
-  position: sticky;
-  top: 20px;
+  position: fixed;
+  top: 12px;
+  left: 50%;
   z-index: 10;
   display: flex;
   align-items: center;
@@ -100,13 +106,14 @@ button {
   gap: 10px;
   width: fit-content;
   max-width: calc(100% - 32px);
-  margin: 0 auto;
+  margin: 0;
   padding: 10px;
   border: 1px solid var(--border);
   border-radius: 8px;
   background: var(--header-background);
   box-shadow: var(--shadow-md);
   backdrop-filter: blur(14px);
+  transform: translateX(-50%);
 }
 
 nav {
@@ -165,9 +172,9 @@ main {
   display: flex;
   align-items: center;
   width: min(1160px, calc(100% - 32px));
-  min-height: min(680px, calc(100vh - 92px));
+  min-height: min(680px, 100vh);
   margin: 0 auto;
-  padding: 86px 0 58px;
+  padding: 128px 0 58px;
 }
 
 .hero-copy {
@@ -228,6 +235,11 @@ main {
   overflow: hidden;
   padding-bottom: 0.12em;
   margin-bottom: -0.08em;
+}
+
+.name-word {
+  display: inline-flex;
+  white-space: nowrap;
 }
 
 .name-char {
@@ -943,7 +955,7 @@ h1 {
   .hero {
     width: min(1160px, calc(100% - 64px));
     min-height: auto;
-    padding-top: 58px;
+    padding-top: 124px;
   }
 
   .section {
@@ -1001,9 +1013,12 @@ h1 {
 
 @media (max-width: 600px) {
   .site-header {
-    width: min(100% - 32px, 420px);
+    width: fit-content;
     max-width: none;
-    gap: 8px;
+    margin-right: auto;
+    margin-left: auto;
+    justify-content: space-between;
+    gap: 18px;
     padding: 8px;
     border: 1px solid var(--border);
     border-radius: 8px;
@@ -1011,17 +1026,17 @@ h1 {
 
   .site-header .menu-toggle {
     display: inline-flex;
-    width: 42px;
-    min-height: 38px;
+    width: 46px;
+    min-width: 46px;
+    min-height: 42px;
   }
 
   nav {
     position: absolute;
     top: calc(100% + 8px);
-    right: 0;
-    left: 0;
+    left: 50%;
     display: grid;
-    width: 100%;
+    width: min(320px, calc(100vw - 32px));
     max-height: 0;
     gap: 6px;
     overflow: hidden;
@@ -1032,7 +1047,7 @@ h1 {
     box-shadow: var(--shadow-md);
     opacity: 0;
     pointer-events: none;
-    transform: translateY(-6px);
+    transform: translate(-50%, -6px);
     transition:
       max-height 220ms ease,
       opacity 180ms ease,
@@ -1048,7 +1063,7 @@ h1 {
     padding: 8px;
     opacity: 1;
     pointer-events: auto;
-    transform: translateY(0);
+    transform: translate(-50%, 0);
   }
 
   nav a {
@@ -1062,16 +1077,19 @@ h1 {
     flex-direction: row;
   }
 
-  .theme-toggle {
-    width: 42px;
-    min-height: 38px;
-    margin-left: auto;
+  .site-header .theme-toggle {
+    width: 46px;
+    min-width: 46px;
+    min-height: 42px;
+    margin-left: 0;
     align-self: stretch;
   }
 
   .hero {
-    width: min(100% - 40px, 1160px);
-    padding: 42px 0 44px;
+    width: auto;
+    margin-right: 20px;
+    margin-left: 20px;
+    padding: 116px 0 44px;
   }
 
   .hero-role {
@@ -1084,13 +1102,9 @@ h1 {
     font-size: 1rem;
   }
 
-  h1 {
-    font-size: clamp(2.5rem, 13vw, 4.25rem);
-  }
-
   .owner-name {
     max-width: 100%;
-    font-size: clamp(3rem, 15vw, 5rem);
+    font-size: clamp(2.72rem, 12vw, 4rem);
   }
 
   .hero p {
@@ -1103,7 +1117,9 @@ h1 {
   }
 
   .section {
-    width: min(100% - 40px, 1160px);
+    width: auto;
+    margin-right: 20px;
+    margin-left: 20px;
     padding: 38px 0;
   }
 
@@ -1188,8 +1204,8 @@ h1 {
   }
 
   .contact {
-    width: min(100% - 40px, 1160px);
-    margin: 26px auto 36px;
+    width: auto;
+    margin: 26px 20px 36px;
     padding: 24px;
   }
 
@@ -1202,7 +1218,8 @@ h1 {
     flex: 1 1 100%;
   }
 
-  .ui-button {
+  .hero-actions .ui-button,
+  .contact-actions .ui-button {
     width: 100%;
   }
 
@@ -1218,8 +1235,14 @@ h1 {
   }
 
   .site-header {
-    width: min(100% - 24px, 380px);
+    gap: 14px;
     padding: 7px;
+  }
+
+  .site-header .menu-toggle {
+    width: 42px;
+    min-width: 42px;
+    min-height: 40px;
   }
 
   nav a {
@@ -1233,27 +1256,26 @@ h1 {
     height: 15px;
   }
 
-  .theme-toggle {
-    width: 38px;
-    min-height: 36px;
+  .site-header .theme-toggle {
+    width: 42px;
+    min-width: 42px;
+    min-height: 40px;
   }
 
   .hero {
-    width: min(100% - 32px, 1160px);
-    padding-top: 34px;
+    margin-right: 16px;
+    margin-left: 16px;
+    padding-top: 108px;
   }
 
   .section,
   .contact {
-    width: min(100% - 32px, 1160px);
-  }
-
-  h1 {
-    font-size: clamp(2.25rem, 12.5vw, 3.4rem);
+    margin-right: 16px;
+    margin-left: 16px;
   }
 
   .owner-name {
-    font-size: clamp(2.7rem, 14vw, 4.1rem);
+    font-size: clamp(2.4rem, 11.5vw, 3.3rem);
   }
 
   .section {

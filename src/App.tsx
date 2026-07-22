@@ -43,7 +43,7 @@ import { projects, skills, type Project } from "./projects";
 gsap.registerPlugin(ScrollTrigger);
 
 const ownerName = "Diego Inácio";
-const ownerNameCharacters = Array.from(ownerName);
+const ownerNameWords = ownerName.split(" ");
 const navItems = [
   { id: "inicio", label: "Início", Icon: Home },
   { id: "sobre", label: "Sobre", Icon: UserRound },
@@ -217,7 +217,35 @@ export function App() {
     return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
   });
 
+  useEffect(() => {
+    if (window.location.hash) {
+      return;
+    }
+
+    window.history.scrollRestoration = "manual";
+
+    const resetScroll = () => window.scrollTo(0, 0);
+    let secondAnimationFrame = 0;
+    const animationFrame = window.requestAnimationFrame(() => {
+      secondAnimationFrame = window.requestAnimationFrame(resetScroll);
+    });
+    const timeouts = [50, 150, 400, 800].map((delay) => window.setTimeout(resetScroll, delay));
+
+    resetScroll();
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+      window.cancelAnimationFrame(secondAnimationFrame);
+      timeouts.forEach((timeout) => window.clearTimeout(timeout));
+    };
+  }, []);
+
   useLayoutEffect(() => {
+    if (!window.location.hash) {
+      window.history.scrollRestoration = "manual";
+      window.scrollTo(0, 0);
+    }
+
     const context = gsap.context(() => {
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const animatedTargets = [".name-char", ".hero-role", ".hero-greeting", ".hero-description", ".hero-actions"];
@@ -381,9 +409,14 @@ export function App() {
             <span className="hero-role">Desenvolvedor de Software</span>
             <p className="hero-greeting">Olá, me chamo</p>
             <h1 className="owner-name" aria-label={ownerName}>
-              {ownerNameCharacters.map((character, index) => (
-                <span className="name-char-wrap" aria-hidden="true" key={`${character}-${index}`}>
-                  <span className="name-char">{character === " " ? "\u00A0" : character}</span>
+              {ownerNameWords.map((word, wordIndex) => (
+                <span className="name-word" aria-hidden="true" key={word}>
+                  {Array.from(word).map((character, characterIndex) => (
+                    <span className="name-char-wrap" key={`${word}-${character}-${characterIndex}`}>
+                      <span className="name-char">{character}</span>
+                    </span>
+                  ))}
+                  {wordIndex < ownerNameWords.length - 1 ? "\u00A0" : null}
                 </span>
               ))}
             </h1>
