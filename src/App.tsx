@@ -500,7 +500,7 @@ export function App() {
       <main>
         <section id="inicio" className="hero" ref={heroRef}>
           <div className="hero-copy">
-            <span className="hero-role">Desenvolvedor de Software</span>
+            <span className="hero-role">Desenvolvedor de Software Full Stack</span>
             <p className="hero-greeting">Olá, me chamo</p>
             <h1 className="owner-name" aria-label={ownerName}>
               {ownerNameWords.map((word, wordIndex) => (
@@ -515,9 +515,9 @@ export function App() {
               ))}
             </h1>
             <p className="hero-description">
-              Gosto de transformar ideias em código limpo, bem estruturado e
-              elaborado com amor, criando soluções que sejam úteis, cuidadosas e
-              fáceis de evoluir.
+              Desenvolvo aplicações web, APIs e integrações para produtos digitais,
+              sistemas institucionais e soluções com IoT, usando React, Angular,
+              Spring Boot, FastAPI e PostgreSQL.
             </p>
             <div className="hero-actions">
               <Button as="a" href="#sobre">
