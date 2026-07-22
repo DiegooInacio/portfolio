@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { type ChangeEvent, type FormEvent, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import useEmblaCarousel from "embla-carousel-react";
@@ -16,6 +16,7 @@ import {
   Mail,
   Menu,
   Moon,
+  Send,
   Sun,
   X,
   UserRound,
@@ -38,11 +39,15 @@ import { TbBrain, TbNetwork } from "react-icons/tb";
 import { Badge } from "./components/ui/badge";
 import { Button } from "./components/ui/button";
 import { Card, CardContent, CardDescription, CardTitle } from "./components/ui/card";
+import { Input } from "./components/ui/input";
+import { Textarea } from "./components/ui/textarea";
 import { projects, skills, type Project } from "./projects";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const ownerName = "Diego Inácio";
+const ownerEmail = "diegoinacionogueira@gmail.com";
+const contactFormEndpoint = import.meta.env.VITE_CONTACT_FORM_ENDPOINT?.trim() ?? "";
 const ownerNameWords = ownerName.split(" ");
 const navItems = [
   { id: "inicio", label: "Início", Icon: Home },
@@ -88,6 +93,14 @@ const skillIcons: Record<string, IconType> = {
   Git: SiGit,
   Docker: SiDocker,
 };
+
+type ContactFormValues = {
+  name: string;
+  email: string;
+  message: string;
+};
+
+type ContactStatus = "idle" | "sending" | "sent" | "error";
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   const initials = project.name.slice(0, 2).toUpperCase();
@@ -207,6 +220,13 @@ export function App() {
   const heroRef = useRef<HTMLElement>(null);
   const [activeSection, setActiveSection] = useState("inicio");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [contactForm, setContactForm] = useState<ContactFormValues>({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [contactStatus, setContactStatus] = useState<ContactStatus>("idle");
+  const [contactFeedback, setContactFeedback] = useState("");
   const [theme, setTheme] = useState<"light" | "dark">(() => {
     const storedTheme = localStorage.getItem("theme");
 
@@ -358,6 +378,67 @@ export function App() {
       window.removeEventListener("resize", updateActiveSection);
     };
   }, []);
+
+  const handleContactChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = event.target;
+
+    setContactForm((currentForm) => ({
+      ...currentForm,
+      [name]: value,
+    }));
+  };
+
+  const handleContactSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const formValues = {
+      name: contactForm.name.trim(),
+      email: contactForm.email.trim(),
+      message: contactForm.message.trim(),
+    };
+
+    setContactStatus("sending");
+    setContactFeedback("");
+
+    if (contactFormEndpoint) {
+      try {
+        const response = await fetch(contactFormEndpoint, {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...formValues,
+            subject: `Contato pelo portfólio - ${formValues.name}`,
+            _subject: `Contato pelo portfólio - ${formValues.name}`,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Contact form request failed.");
+        }
+
+        setContactForm({ name: "", email: "", message: "" });
+        setContactStatus("sent");
+        setContactFeedback("Mensagem enviada. Obrigado pelo contato.");
+        return;
+      } catch {
+        setContactStatus("error");
+        setContactFeedback("Não foi possível enviar agora. Tente novamente em instantes.");
+        return;
+      }
+    }
+
+    const subject = encodeURIComponent(`Contato pelo portfólio - ${formValues.name}`);
+    const body = encodeURIComponent(
+      `Nome: ${formValues.name}\nE-mail: ${formValues.email}\n\n${formValues.message}`,
+    );
+
+    window.location.href = `mailto:${ownerEmail}?subject=${subject}&body=${body}`;
+    setContactStatus("idle");
+    setContactFeedback("Abri seu aplicativo de e-mail com a mensagem preenchida.");
+  };
 
   return (
     <>
@@ -512,45 +593,84 @@ export function App() {
         </section>
 
         <section id="contato" className="contact">
-          <div>
+          <div className="contact-copy">
             <span>Contato</span>
             <h2>Disponível para conversar sobre produto, software e tecnologia.</h2>
-            <a className="contact-email" href="mailto:diegoinacionogueira@gmail.com">
-              diegoinacionogueira@gmail.com
-            </a>
+            <div className="contact-actions">
+              <Button
+                as="a"
+                className="icon-button"
+                href="https://github.com/DiegooInacio"
+                size="icon"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="GitHub"
+                title="GitHub"
+                variant="secondary"
+              >
+                <Github size={20} aria-hidden="true" />
+              </Button>
+              <Button
+                as="a"
+                className="icon-button"
+                href="https://www.linkedin.com/in/diego-inacio-a1094a252"
+                size="icon"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="LinkedIn"
+                title="LinkedIn"
+                variant="secondary"
+              >
+                <Linkedin size={20} aria-hidden="true" />
+              </Button>
+            </div>
           </div>
-          <div className="contact-actions">
-            <Button as="a" href="mailto:diegoinacionogueira@gmail.com">
-              E-mail
-              <Mail size={18} aria-hidden="true" />
+          <form className="contact-form" onSubmit={handleContactSubmit}>
+            <div className="form-field">
+              <label htmlFor="contact-name">Nome</label>
+              <Input
+                id="contact-name"
+                name="name"
+                type="text"
+                autoComplete="name"
+                value={contactForm.name}
+                onChange={handleContactChange}
+                required
+              />
+            </div>
+            <div className="form-field">
+              <label htmlFor="contact-email">E-mail</label>
+              <Input
+                id="contact-email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                value={contactForm.email}
+                onChange={handleContactChange}
+                required
+              />
+            </div>
+            <div className="form-field">
+              <label htmlFor="contact-message">Mensagem</label>
+              <Textarea
+                id="contact-message"
+                name="message"
+                value={contactForm.message}
+                onChange={handleContactChange}
+                rows={5}
+                required
+              />
+            </div>
+            <Button className="contact-submit" type="submit" disabled={contactStatus === "sending"}>
+              {contactStatus === "sending" ? "Enviando..." : "Enviar mensagem"}
+              <Send size={18} aria-hidden="true" />
             </Button>
-            <Button
-              as="a"
-              className="icon-button"
-              href="https://github.com/DiegooInacio"
-              size="icon"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="GitHub"
-              title="GitHub"
-              variant="secondary"
-            >
-              <Github size={20} aria-hidden="true" />
-            </Button>
-            <Button
-              as="a"
-              className="icon-button"
-              href="https://www.linkedin.com/in/diego-inacio-a1094a252"
-              size="icon"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="LinkedIn"
-              title="LinkedIn"
-              variant="secondary"
-            >
-              <Linkedin size={20} aria-hidden="true" />
-            </Button>
-          </div>
+            {contactFeedback ? (
+              <p className={`contact-feedback ${contactStatus === "error" ? "error" : "success"}`} role="status">
+                {contactFeedback}
+              </p>
+            ) : null}
+          </form>
         </section>
       </main>
     </>

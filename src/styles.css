@@ -319,6 +319,12 @@ h1 {
   transform: translateY(-2px);
 }
 
+.ui-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.72;
+  transform: none;
+}
+
 .ui-button:focus-visible,
 .carousel-button:focus-visible {
   outline: 3px solid var(--ring);
@@ -843,9 +849,9 @@ h1 {
 
 .contact {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1fr);
+  align-items: flex-start;
   gap: 28px;
   width: min(1160px, calc(100% - 32px));
   margin: 38px auto 52px;
@@ -858,7 +864,8 @@ h1 {
   box-shadow: var(--card-shadow);
 }
 
-.contact > div {
+.contact-copy,
+.contact-form {
   min-width: 0;
 }
 
@@ -887,17 +894,69 @@ h1 {
   background: var(--muted);
 }
 
-.contact-email {
-  display: inline-flex;
-  max-width: 100%;
-  margin-top: 18px;
-  color: var(--muted-foreground);
-  font-weight: 750;
-  overflow-wrap: anywhere;
+.contact-form {
+  display: grid;
+  gap: 14px;
+  width: 100%;
 }
 
-.contact-email:hover {
+.form-field {
+  display: grid;
+  gap: 8px;
+}
+
+.form-field label {
   color: var(--card-foreground);
+  font-size: 0.86rem;
+  font-weight: 850;
+}
+
+.ui-input,
+.ui-textarea {
+  width: 100%;
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 13px 14px;
+  color: var(--card-foreground);
+  background: var(--muted);
+  font: inherit;
+  line-height: 1.4;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease;
+}
+
+.ui-textarea {
+  min-height: 138px;
+  resize: vertical;
+}
+
+.ui-input:focus,
+.ui-textarea:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ring);
+}
+
+.contact-submit {
+  margin-top: 16px;
+}
+
+.contact-feedback {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.contact-feedback.error {
+  color: #b42318;
+}
+
+.dark .contact-feedback.error {
+  color: #d92d20;
 }
 
 @keyframes rise {
@@ -1006,7 +1065,7 @@ h1 {
 
   .contact {
     align-items: flex-start;
-    flex-direction: column;
+    grid-template-columns: 1fr;
     width: min(1160px, calc(100% - 64px));
   }
 }
@@ -1220,6 +1279,10 @@ h1 {
 
   .hero-actions .ui-button,
   .contact-actions .ui-button {
+    width: 100%;
+  }
+
+  .contact-submit {
     width: 100%;
   }
 
