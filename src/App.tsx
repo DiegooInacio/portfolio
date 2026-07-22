@@ -268,7 +268,14 @@ export function App() {
 
     const context = gsap.context(() => {
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      const animatedTargets = [".name-char", ".hero-role", ".hero-greeting", ".hero-description", ".hero-actions"];
+      const animatedTargets = [
+        ".name-char",
+        ".hero-role",
+        ".hero-greeting",
+        ".hero-description",
+        ".hero-actions",
+        ".hero-portrait",
+      ];
 
       if (reduceMotion) {
         gsap.set(animatedTargets, {
@@ -325,6 +332,12 @@ export function App() {
           { y: 18, opacity: 0 },
           { y: 0, opacity: 1, duration: 0.62, ease: "power2.out" },
           "-=0.44",
+        )
+        .fromTo(
+          ".hero-portrait",
+          { y: 20, opacity: 0, scale: 0.96 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.72, ease: "power3.out" },
+          "-=0.7",
         );
 
       ScrollTrigger.create({
@@ -515,6 +528,11 @@ export function App() {
                 Conversar
                 <Mail size={18} aria-hidden="true" />
               </Button>
+            </div>
+          </div>
+          <div className="hero-portrait">
+            <div className="portrait-frame">
+              <img src="/profile/imagem_perfil-removebg.png" alt="Foto de Diego Inácio" />
             </div>
           </div>
         </section>
