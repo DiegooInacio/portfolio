@@ -527,7 +527,7 @@ export function App() {
             <Button
               as="a"
               className="icon-button"
-              href="https://github.com/diegoinacionogueira"
+              href="https://github.com/DiegooInacio"
               size="icon"
               target="_blank"
               rel="noreferrer"
@@ -540,7 +540,7 @@ export function App() {
             <Button
               as="a"
               className="icon-button"
-              href="https://www.linkedin.com/in/diegoinacionogueira"
+              href="https://www.linkedin.com/in/diego-inacio-a1094a252"
               size="icon"
               target="_blank"
               rel="noreferrer"
