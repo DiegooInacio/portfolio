@@ -80,6 +80,13 @@ const experienceItems = [
   },
 ];
 
+const KarmaIcon: IconType = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" {...props}>
+    <path d="m12 2.5 7.5 4.3v8.4L12 19.5l-7.5-4.3V6.8L12 2.5Z" />
+    <path d="M9 7v10M15 7l-6 5 6 5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
 const skillIcons: Record<string, IconType> = {
   TypeScript: SiTypescript,
   React: SiReact,
@@ -93,6 +100,7 @@ const skillIcons: Record<string, IconType> = {
   "Machine Learning": TbBrain,
   Git: SiGit,
   Docker: SiDocker,
+  Karma: KarmaIcon,
 };
 
 type ContactFormValues = {

@@ -104,6 +104,6 @@ export const skillCategories = [
   },
   {
     name: "Ferramentas",
-    skills: ["Git", "Docker"],
+    skills: ["Git", "Docker", "Karma"],
   },
 ];
