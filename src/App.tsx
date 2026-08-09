@@ -8,6 +8,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Code2,
+  Download,
   FolderKanban,
   GraduationCap,
   Github,
@@ -524,9 +525,13 @@ export function App() {
                 Conhecer perfil
                 <ArrowUpRight size={18} aria-hidden="true" />
               </Button>
-              <Button as="a" href="#contato" variant="secondary">
-                Conversar
-                <Mail size={18} aria-hidden="true" />
+              <Button as="a" href="#projetos" variant="secondary">
+                Ver projetos
+                <FolderKanban size={18} aria-hidden="true" />
+              </Button>
+              <Button as="a" href="/Curriculo-Diego-Inacio.pdf" download variant="secondary">
+                Baixar CV
+                <Download size={18} aria-hidden="true" />
               </Button>
             </div>
           </div>
@@ -638,7 +643,7 @@ export function App() {
               <Button
                 as="a"
                 className="icon-button"
-                href="https://www.linkedin.com/in/diego-inacio-a1094a252"
+                href="https://www.linkedin.com/in/diego-inacio-nogueira/"
                 size="icon"
                 target="_blank"
                 rel="noreferrer"
