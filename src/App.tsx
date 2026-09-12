@@ -70,13 +70,13 @@ const experienceItems = [
     period: "2025 - Atualmente",
     place: "LABVICIA - Laboratório de Visão Computacional e IA",
     description:
-      "Participo de projetos como Pronatec Empreender, App Clicks, Integra MEC e CCLi, contribuindo ativamente com Angular e Spring em frentes de backend e frontend.",
+      "Atuo como um dos tech leads em projetos como Pronatec Empreender, App Clicks, Integra MEC e CCLi, contribuindo com Angular e Spring em frentes de backend e frontend.",
   },
   {
-    period: "2026 - Atualmente",
+    period: "2026 - Set. 2026",
     place: "NUVEN - Núcleo de Visão Computacional e Engenharia",
     description:
-      "Atuo no projeto TEEO SMI, desenvolvendo backend com FastAPI, frontend com React e integrações IoT para gerenciamento de turbinas.",
+      "Atuei no projeto TEEO SMI, desenvolvendo backend com FastAPI, frontend com React e integrações IoT para gerenciamento de turbinas.",
   },
 ];
 
